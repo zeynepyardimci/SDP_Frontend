@@ -1,4 +1,7 @@
+"use client";
+import { useEffect, useState } from "react";
 import { FolderOpen, Users, Zap, BarChart3 } from "lucide-react";
+import apiClient from "@/lib/apiClient";
 
 interface StatCard {
   title: string;
@@ -39,7 +42,37 @@ const statCards: StatCard[] = [
   },
 ];
 
+type Project = {
+	id: number | string;
+	name: string;
+};
+
 export default function Page() {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    setLoading(true);
+    apiClient
+      .get<Project[]>("/projects")
+      .then((res) => {
+        if (!isMounted) return;
+        setProjects(res.data ?? []);
+      })
+      .catch((err) => {
+        if (!isMounted) return;
+        setError(err?.response?.data?.message ?? err.message);
+      })
+      .finally(() => {
+        if (!isMounted) return;
+        setLoading(false);
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
   return (
     <div className="space-y-8">
       <div>
@@ -59,6 +92,21 @@ export default function Page() {
             </div>
           </div>
         ))}
+      </div>
+
+      <div className="space-y-4">
+        <h2 className="text-2xl font-semibold text-gray-900">Projects</h2>
+        {loading && <div>Yükleniyor…</div>}
+        {error && <div className="text-red-600">Hata: {error}</div>}
+        {!loading && !error && (
+          <ul className="list-disc pl-6">
+            {projects.length === 0 ? (
+              <li>Kayıt yok</li>
+            ) : (
+              projects.map((p) => <li key={p.id}>{p.name}</li>)
+            )}
+          </ul>
+        )}
       </div>
     </div>
   );

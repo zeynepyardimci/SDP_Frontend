@@ -39,11 +39,12 @@ declare namespace __next_route_internal_types__ {
     | `/scales`
     | `/scales/new`
     | `/settings`
-    | `/users`
-    | `/users/new`
     | `/surveys`
     | `/surveys/new`
-  type DynamicRoutes<T extends string = string> = never
+    | `/users`
+    | `/users/new`
+  type DynamicRoutes<T extends string = string> = 
+    | `/api/rails/${CatchAllSlug<T>}`
 
   type RouteImpl<T> = 
     | StaticRoutes

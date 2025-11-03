@@ -1126,6 +1126,9 @@ pre,
      -moz-user-select: none;
           user-select: none;
 }
+.list-disc{
+  list-style-type: disc;
+}
 .list-none{
   list-style-type: none;
 }
@@ -1526,6 +1529,9 @@ pre,
 }
 .pl-4{
   padding-left: 1rem;
+}
+.pl-6{
+  padding-left: 1.5rem;
 }
 .pl-8{
   padding-left: 2rem;
