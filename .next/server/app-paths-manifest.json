@@ -1,0 +1,11 @@
+{
+  "/page": "app/page.js",
+  "/projects/page": "app/projects/page.js",
+  "/users/page": "app/users/page.js",
+  "/scales/page": "app/scales/page.js",
+  "/products/page": "app/products/page.js",
+  "/packages/page": "app/packages/page.js",
+  "/surveys/page": "app/surveys/page.js",
+  "/surveys/new/page": "app/surveys/new/page.js",
+  "/settings/page": "app/settings/page.js"
+}

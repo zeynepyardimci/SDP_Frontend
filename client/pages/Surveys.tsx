@@ -1,0 +1,180 @@
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Plus, MoreHorizontal } from "lucide-react";
+import { MainLayout } from "@/components/MainLayout";
+
+interface Survey {
+  id: string;
+  title: string;
+  status: "Active" | "Closed";
+  submissions: number;
+  createdBy: {
+    name: string;
+    initials: string;
+    avatar?: string;
+  };
+}
+
+const surveys: Survey[] = [
+  {
+    id: "1",
+    title: "Customer Satisfaction Survey 2024",
+    status: "Active",
+    submissions: 342,
+    createdBy: { name: "Sarah Johnson", initials: "SJ" },
+  },
+  {
+    id: "2",
+    title: "Product Feature Feedback",
+    status: "Active",
+    submissions: 189,
+    createdBy: { name: "Alex Chen", initials: "AC" },
+  },
+  {
+    id: "3",
+    title: "Q4 Employee Engagement Survey",
+    status: "Closed",
+    submissions: 156,
+    createdBy: { name: "Marcus Williams", initials: "MW" },
+  },
+  {
+    id: "4",
+    title: "Platform Usability Assessment",
+    status: "Active",
+    submissions: 278,
+    createdBy: { name: "Emily Rodriguez", initials: "ER" },
+  },
+  {
+    id: "5",
+    title: "Beta Testing Feedback Form",
+    status: "Closed",
+    submissions: 92,
+    createdBy: { name: "James Park", initials: "JP" },
+  },
+];
+
+function getStatusColor(status: "Active" | "Closed"): "default" | "secondary" {
+  switch (status) {
+    case "Active":
+      return "default";
+    case "Closed":
+      return "secondary";
+  }
+}
+
+export default function Surveys() {
+  return (
+    <MainLayout>
+      <div className="space-y-8">
+        {/* Header Section */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <h1 className="text-4xl font-bold text-gray-900">Surveys</h1>
+            <p className="text-gray-600 mt-2">Create and manage user surveys</p>
+          </div>
+          <Button className="gap-2 bg-blue-500 hover:bg-blue-600 text-white w-full md:w-auto">
+            <Plus className="w-4 h-4" />
+            Create New Survey
+          </Button>
+        </div>
+
+        {/* Table Section */}
+        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+          <Table>
+            <TableHeader className="bg-gray-50">
+              <TableRow className="hover:bg-gray-50 border-gray-200">
+                <TableHead className="text-gray-700 font-semibold">
+                  Survey Title
+                </TableHead>
+                <TableHead className="text-gray-700 font-semibold">
+                  Status
+                </TableHead>
+                <TableHead className="text-gray-700 font-semibold">
+                  Submissions
+                </TableHead>
+                <TableHead className="text-gray-700 font-semibold">
+                  Created By
+                </TableHead>
+                <TableHead className="w-12 text-gray-700 font-semibold">
+                  Actions
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {surveys.map((survey) => (
+                <TableRow
+                  key={survey.id}
+                  className="border-gray-200 hover:bg-gray-50"
+                >
+                  <TableCell className="font-medium text-gray-900">
+                    {survey.title}
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant={getStatusColor(survey.status)}>
+                      {survey.status}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-gray-900 font-semibold">
+                    {survey.submissions}
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-3">
+                      <Avatar className="h-8 w-8">
+                        <AvatarImage src={survey.createdBy.avatar} />
+                        <AvatarFallback className="bg-blue-100 text-blue-700 text-xs font-semibold">
+                          {survey.createdBy.initials}
+                        </AvatarFallback>
+                      </Avatar>
+                      <span className="text-gray-700 text-sm">
+                        {survey.createdBy.name}
+                      </span>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="text-gray-700 hover:text-gray-900 hover:bg-gray-100"
+                        >
+                          <MoreHorizontal className="w-4 h-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem className="cursor-pointer">
+                          View Results
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="cursor-pointer">
+                          Edit
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="cursor-pointer text-red-600">
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </div>
+    </MainLayout>
+  );
+}
